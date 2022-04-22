@@ -18,10 +18,12 @@ resource "aws_launch_configuration" "IE-launch-config" {
   user_data = <<-EOF
               #!/bin/bash
               apt update && apt install ansible -y
+	      /*
               mkdir /home/ubuntu/repo
               cd /home/ubuntu/repo
               git clone https://github.com/TimAbad/dashboard.git
               ansible-playbook -i localhost /home/ubuntu/repo/dashboard/deploy_app.yml
+	      */
               EOF 
 /*
   provisioner "local-exec" {
@@ -47,7 +49,7 @@ resource "aws_autoscaling_group" "IE-autoscale-group" {
   min_size = 2
   max_size = 4
   desired_capacity = 2
-
+  max_instance_lifetime = 86400
   protect_from_scale_in = true
 
   tag {
